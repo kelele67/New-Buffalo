@@ -1,6 +1,6 @@
 # BUFFALO-1.0.0
 
-refactor the [buffalo]() code
+refactor the [buffalo](https://github.com/kelele67/Buffalo) code
 
 Build status:
 ![](https://img.shields.io/scrutinizer/build/g/filp/whoops.svg)
