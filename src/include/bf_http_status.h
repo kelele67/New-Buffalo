@@ -1,0 +1,52 @@
+/* Informational status */
+
+#define BF_INFO_CONTINUE	                100
+#define BF_INFO_SWITCH_PROTOCOL	                101
+
+/* Succesful */
+#define BF_HTTP_OK				200
+#define BF_HTTP_CREATED				201
+#define BF_HTTP_ACCEPTED			202
+#define BF_HTTP_NON_AUTH_INFO			203
+#define BF_HTTP_NOCONTENT			204
+#define BF_HTTP_RESET				205
+#define BF_HTTP_PARTIAL				206
+
+/* Redirections */
+#define BF_REDIR_MULTIPLE			300
+#define BF_REDIR_MOVED				301
+#define BF_REDIR_MOVED_T			302
+#define	BF_REDIR_SEE_OTHER			303
+#define BF_NOT_MODIFIED			        304
+#define BF_REDIR_USE_PROXY			305
+
+/* Client Errors */
+#define BF_CLIENT_BAD_REQUEST			400
+#define BF_CLIENT_UNAUTH			401
+#define BF_CLIENT_PAYMENT_REQ   		402     /* Wtf?! :-) */
+#define BF_CLIENT_FORBIDDEN			403
+#define BF_CLIENT_NOT_FOUND			404
+#define BF_CLIENT_METHOD_NOT_ALLOWED		405
+#define BF_CLIENT_NOT_ACCEPTABLE		406
+#define BF_CLIENT_PROXY_AUTH			407
+#define BF_CLIENT_REQUEST_TIMEOUT		408
+#define BF_CLIENT_CONFLICT			409
+#define BF_CLIENT_GONE				410
+#define BF_CLIENT_LENGTH_REQUIRED		411
+#define BF_CLIENT_PRECOND_FAILED		412
+#define BF_CLIENT_REQUEST_ENTITY_TOO_LARGE	413
+#define BF_CLIENT_REQUEST_URI_TOO_LONG		414
+#define BF_CLIENT_UNSUPPORTED_MEDIA		415
+
+/* Server Errors */
+#define BF_SERVER_INTERNAL_ERROR		500
+#define BF_SERVER_NOT_IMPLEMENTED		501
+#define BF_SERVER_BAD_GATEWAY			502
+#define BF_SERVER_SERVICE_UNAV			503
+#define BF_SERVER_GATEWAY_TIMEOUT		504
+#define BF_SERVER_HTTP_VERSION_UNSUP		505
+
+/* Text header messages */
+#define M_HTTP_OK_TXT				"HTTP/1.1 200 OK\r\n"
+
+bf_queue_sint_t *bf_http_status_list;
