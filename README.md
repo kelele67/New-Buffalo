@@ -13,3 +13,4 @@ Build status:
 * client_session
 * session_request
 * plugin -- developing
+* http -- developing
