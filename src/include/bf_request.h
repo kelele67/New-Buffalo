@@ -230,7 +230,7 @@ void bf_request_init_error_msgs(void);
 int bf_handler_read(int socket, struct client_session *cs);
 int bf_handler_write(int socket, struct client_session *cs);
 
-void bf_reqquest_header_toc_init(struct header_toc *toc);
+void bf_request_header_toc_init(struct header_toc *toc);
 
 void bf_request_ka_next(struct client_session *cs);
 

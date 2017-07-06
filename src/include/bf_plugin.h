@@ -100,5 +100,154 @@ struct plugin {
     void *handler;
     unsigned int hooks;
 
+    // 强制转换
+    int (*init) (void *, char *);
+    int (*exit) ();
+
+    // hooks
+    struct plugin_core core;
+    struct plugin_stage stage;
+    struct plugin_network_io net_io;
+
+    // epoll 事件
+    int (*event_read) (int);
+    int (*event_write) (int);
+    int (*event_error) (int);
+    int (*event_close) (int);
+    int (*event_timeout) (int);
+
+    // 每个插件在全局数据里面都有一个 线程参数
+    pthread_key_t *thread_key;
+
+    struct bf_queue_s _head;
+};
+
+/**
+ * 不同的插件可以有不同的状态，
+ * 这里我们建立一个表来直接调用不同状态，
+ * 为了避免服务器每次都要比较每个插件去寻找一个特定的插件
+ */
+struct plugin_stagem {
+    struct plugin *p;
+    struct plugin_stagem *next;
+};
+
+struct plugin_stagemap {
+    struct plugin_stagem *stage_10; // 服务器尚未进入循环，尚未建立监听
+    struct plugin_stagem *stage_15; 
+    struct plugin_stagem *stage_20; // 接收连接但是还没有建立工作线程
+    struct plugin_stagem *stage_30; // 接收到HTTP请求
+    struct plugin_stagem *stage_40; // 对象handler
+    struct plugin_stagem *stage_50; // 请求完毕
+};
+
+struct plugin_stagemap *plg_stagemap;
+
+// 插件的api接口
+struct plugin_api {
+    struct server_config *config;
+    struct bf_queue_s *plugins;
+    struct bf_queue_s **sched_list;
+
+    // error
+    int *(*_error) (int, const char ...);
+
+    // HTTP 请求
+    int *(*http_request_end) (int);
+
+    // 内存
+    void *(*bf_lloc) (int);
+    void *(*bf_alloc) (int);
+    void (*bf_free) (void*);
+    void (*pointer_set) (bf_pointer *, char *);
+    void (*pointer_print) (bf_pointer);
+    char *(*pointer_to_buf) (bf_pointer);
+
+    // string
+    int (*str_itop) (int, bf_pointer *);
+    int (*str_search) (const char *, const char *, int);
+    int (*str_search_n) (const char *, const char *, int, int);
+    char *(*str_build) (char **, unsigned long *, const char *, ...);
+    char *(*str_dup) (const char *);
+    char *(*str_copy_substr) (const char *, int, int);
+    struct bf_string_line *(*str_split_line) (const char *);
+
+    // file
+    char *(*file_to_buffer) (char *);
+    struct file_info *(*file_get_info) (char *);
+
+    // header
+    int (*header_send) (int, struct client_session *, struct session_request *);
+    bf_pointer (*header_get) (struct header_toc *, bf_pointer);
+    int (*header_add) (struct session_request *, char *row, int len);
+    void (*header_set_http_status) (struct session_request *, int);
+
+    // iov
+    struct bf_iov *(*iov_create) (int, int);
+    void (*iov_free) (struct bf_iov *);
+    int (*iov_add_entry) (struct bf_iov *, char *, int, bf_pointer, int);
+    int (*iov_set_entry) (struct bf_iov *, char *, int, int, int);
+    ssize_t (*iov_send) (int, struct bf_iov *);
+    void (*iov_print) (struct bf_iov *);
+
+    // plugin
+    void *(*plugin_load_symbol) (void *, char *);
+
+    // epoll
+    void *(*epoll_init) (int, bf_epoll_handlers *, int);
+    int (*epoll_create) (int);
+    int (*epoll_add) (int, int, int, int);
+    int (*epoll_del) (int, int);
+    int (*epoll_change_mode) (int, int, int);
+
+    // socket
+    int (*socket_cork_flag) (int, int);
+    int (*socket_reset) (int);
+    int (*socket_set_tcp_nodelay) (int);
+    int (*socket_connect) (int);
+    int (*socket_set_noblocking) (int);
+    int (*socket_create) ();
+    int (*socket_close) (int);
+    int (*socket_sendv) (int, struct bf_iov *);
+    int (*socket_send) (int, const void *, size_t);
+    int (*socket_read) (int, void *, int);
+    int (*socket_send_file) (int, int, off_t, size_t);
+
+    // config
+    struct bf_config *(*config_create) (char *);
+    void (*config_free) (struct bf_config *);
+    struct bf_config_section *(*config_section_get) (struct bf_config *, char *);
+    void *(*config_section_getval) (struct bf_config_section *, char *, int);
+
+    //scheduler
+    int (*shced_remove_session) (int);
+    struct sched_connection *(*sched_get_connection) (struct sched_list_node *, int);
+
+    // worker
+    int (*worker_spawn) (void (*func) (void *));
+
     
-}
+
+    // epoll_event
+    // int (*event_read) (int);
+    // int (*event_write) (int);
+    // int (*event_error) (int);
+    // int (*event_close) (int);
+    // int (*event_timeout) (int);
+    int (*event_add) (int, int, struct plugin *, struct client_session *, struct session_request *);
+    int (*event_del) (int);
+    int (*event_socket_change_mode) (int, int);
+
+    // system
+    int (*sys_get_somaxconn) ();
+
+    // utils
+    int (*time_unix) ();
+    bf_pointer *(*time_human)();
+
+    #ifdef TRACE
+        void (*trace) ();
+        int (*errno_print) (int);
+    #endif
+
+};

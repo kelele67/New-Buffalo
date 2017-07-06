@@ -25,7 +25,7 @@ typedef struct
 	int (*error) (int);
 	int (*close) (int);
 	int (*timeout) (int);	
-} bf_epool_handlers;
+} bf_epoll_handlers;
 
 int bf_epoll_create(int max_events);
 void *bf_epoll_init(int efd, bf_epoll_handlers * handler, int max_events);
