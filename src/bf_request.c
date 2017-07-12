@@ -304,7 +304,7 @@ static int bf_request_parse(struct client_session *cs) {
         sr_node->body.data = cs->body + i;
         sr_node->body.len = end -i;
 
-        /* Method, previous catch in mk_http_pending_request */
+        /* Method, previous catch in bf_http_pending_request */
         if (i == 0) {
             sr_node->method = cs->first_method;
         } else {

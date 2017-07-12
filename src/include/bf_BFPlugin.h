@@ -2,7 +2,7 @@
 #define BUFFALO_PLUGIN_H
 
 #include "bf_plugin.h"
-#include "bf_list.h"
+#include "bf_queue.h"
 #include "bf_http.h"
 #include "bf_file.h"
 #include "bf_socket.h"
@@ -12,7 +12,7 @@
 struct plugin_api *bf_api;
 struct plugin_info _plugin_info;
 
-bf_plugin_key_t _mkp_data;
+bf_plugin_key_t _bfp_data;
 
 #define BUFFALO_PLUGIN(a, b, c, d) \
     struct plugin_info _plugin_info = {a, b, c, d}

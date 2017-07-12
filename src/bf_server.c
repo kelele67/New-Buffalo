@@ -67,12 +67,12 @@ void bf_server_loop(int server_fd) {
 #ifdef TRACE
         BF_TRACE("New connrction arrived: FD %i", remote_fd);
 
-        struct bf_list *sched_head;
+        struct bf_queue_s *sched_head;
         struct sched_list_node *node;
 
         BF_TRACE("Worker Status");
-        bf_list_foreach(sched_head, sched_list) {
-            node = bf_list_entry(sched_head, strcuct sched_list_node, _head);
+        bf_queue_foreach(sched_head, sched_list) {
+            node = bf_queue_entry(sched_head, strcuct sched_list_node, _head);
             BF_TRACE(" SID %i / conx = %i", node->index, node->active_connections);
         }
 #endif

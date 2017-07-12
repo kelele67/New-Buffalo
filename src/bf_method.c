@@ -27,7 +27,7 @@ long int bf_method_post_content_length(char *body) {
 
     /* obs: Table of Content (toc) 在所有的 request 都到达时建立
      * 这个函数不能在正在接收 request 的时候使用：
-     * mk_http_pending_request().
+     * bf_http_pending_request().
      */
     toc = bf_cache_get(bf_cache_header_toc);
     tmp = bf_request_header_get(toc, bf_rh_content_length);

@@ -210,8 +210,8 @@ struct bf_config *bf_config_create(const char *path) {
         }
     }
     /*
-    struct mk_config_section *s;
-    struct mk_config_entry *e;
+    struct bf_config_section *s;
+    struct bf_config_entry *e;
 
     s = conf->section;
     while(s) {

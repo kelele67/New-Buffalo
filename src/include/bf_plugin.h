@@ -17,29 +17,29 @@
 
 #define BF_PLUGIN_LOAD "plugins.load"
 
-#define MK_PLUGIN_ERROR -1      /* 插件运行错误 */
-#define MK_PLUGIN_
+#define BF_PLUGIN_ERROR -1      /* 插件运行错误 */
+#define BF_PLUGIN_
 
 /* 插件 核心类型 */
-#define MK_PLUGIN_CORE_PRCTX (1)
-#define MK_PLUGIN_CORE_THCTX (2)
+#define BF_PLUGIN_CORE_PRCTX (1)
+#define BF_PLUGIN_CORE_THCTX (2)
 
 /* 插件 阶段 */
-#define MK_PLUGIN_STAGE_10 (4)    /* accept()连接刚刚建立 */
-#define MK_PLUGIN_STAGE_20 (8)    /* HTTP Request 到达 */
-#define MK_PLUGIN_STAGE_30 (16)   /* 对象 handler  */
-#define MK_PLUGIN_STAGE_40 (32)   /* content 内容完成 */
-#define MK_PLUGIN_STAGE_50 (64)   /* connection 连接终止 */
+#define BF_PLUGIN_STAGE_10 (4)    /* accept()连接刚刚建立 */
+#define BF_PLUGIN_STAGE_20 (8)    /* HTTP Request 到达 */
+#define BF_PLUGIN_STAGE_30 (16)   /* 对象 handler  */
+#define BF_PLUGIN_STAGE_40 (32)   /* content 内容完成 */
+#define BF_PLUGIN_STAGE_50 (64)   /* connection 连接终止 */
 
 /* 插件 网络类型 */
-#define MK_PLUGIN_NETWORK_IO (128)
-#define MK_PLUGIN_NETWORK_IP (256)
+#define BF_PLUGIN_NETWORK_IO (128)
+#define BF_PLUGIN_NETWORK_IP (256)
 
 /* 返回值 */
-#define MK_PLUGIN_RET_NOT_ME -1
-#define MK_PLUGIN_RET_CONTINUE 100
-#define MK_PLUGIN_RET_END 200
-#define MK_PLUGIN_RET_CLOSE_CONX 300
+#define BF_PLUGIN_RET_NOT_ME -1
+#define BF_PLUGIN_RET_CONTINUE 100
+#define BF_PLUGIN_RET_END 200
+#define BF_PLUGIN_RET_CLOSE_CONX 300
 
 /* 事件返回值
  * 
@@ -251,3 +251,79 @@ struct plugin_api {
     #endif
 
 };
+
+// 插件事件线程属性
+typedef pthread_key_t bf_plugin_event_k;
+
+struct plugin_event {
+    int socket;
+
+    struct plugin *handler;
+    struct client_session *cs;
+    struct session_request *sr;
+
+    struct bf_queue_s _head;
+};
+
+struct plugin_info {
+    const char *shortname;
+    const char *name;
+    const char *version;
+    unsigned int hooks;
+};
+
+void bf_plugin_init();
+void bf_plugin_exit_all();
+void bf_plugin_event_init_list();
+
+int bf_plugin_stage_run(unsigned int stage, 
+                        unsigned int socket, 
+                        struct sched_connection *conx, 
+                        struct client_session *cs, struct session_request *sr);
+
+void bf_plugin_core_process();
+void bf_plugin_core_thread();
+
+void bf_plugin_request_handler_add(struct session_request *sr, struct plugin *p);
+void bf_plugin_request_handler_del(struct session_request *sr, struct plugin *p);
+
+void bf_plugin_preworker_calls();
+
+// 插件事件接口
+int bf_plugin_event_add(int socket, 
+                        int mode,
+                        struct plugin *handler,
+                        struct client_session *cs,
+                        struct session_request *sr);
+int bf_plugin_event_del(int socket);
+int bf_plugin_event_socket_change_mode(int socket, int mode);
+
+// 插件事件 handler
+int bf_plugin_event_read(int socket);
+int bf_plugin_event_write(int socket);
+int bf_plugin_event_error(int socket);
+int bf_plugin_event_close(int socket);
+int bf_plugin_event_timeout(int socket);
+
+void bf_plugin_register_to(struct plugin **st, struct plugin *p);
+void *bf_plugin_load_symbol(void *handler, const char *symbol);
+int bf_plugin_http_request_end(int socket);
+
+// register
+struct plugin *bf_plugin_register(struct plugin *p);
+void bf_plugin_unregister(struct plugin *p);
+
+struct plugin *bf_plugin_alloc(void *handler, char *path);
+void bf_plugin_free(struct plugin *p);
+
+int bf_plugin_time_now_unix();
+bf_pointer *bf_plugin_time_now_human();
+
+int bf_plugin_sched_remove_client(int socket);
+
+int bf_plugin_header_add(struct session_request *sr, char *row, int len);
+int bf_plugin_header_get(struct session_request *sr,
+                         bf_pointer query,
+                         bf_pointer *result);
+
+#endif
