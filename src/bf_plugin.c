@@ -836,7 +836,7 @@ int bf_plugin_event_read(int socket)
 
     BF_TRACE("[FD %i] Read Event", socket);
 
-    /* Socket registered by plugin */
+    /* 插件注册的socket */
     event = bf_plugin_event_get(socket);
     if (event) {
         if (event->handler->event_read) {
