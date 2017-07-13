@@ -703,8 +703,7 @@ int bf_plugin_event_add(int socket, int mode,
         bf_plugin_event_set_list(list);
     }
 
-    /* The thread event info has been registered, now we need
-       to register the socket involved to the thread epoll array */
+    /* 线程事件信息已经注册，现在我们需要注册套接字到线程epoll数组 */
     bf_epoll_add(sched->epoll_fd, socket,
                  mode, BF_EPOLL_BEHAVIOR_DEFAULT);
     return 0;
@@ -747,8 +746,8 @@ struct plugin_event *bf_plugin_event_get(int socket)
     list = bf_plugin_event_get_list();
 
     /* 
-     * In some cases this function is invoked from scheduler.c when a connection is
-     * closed, on that moment there's no thread context so the returned list is NULL.
+     * 在某些情况下，从scheduler.c 调用这个函数。
+     * 当连接关闭时，在那一刻没有线程上下文存在，所以返回列表为空
      */
     if (!list) {
         return NULL;
@@ -774,14 +773,14 @@ void bf_plugin_event_init_list()
     bf_plugin_event_set_list(list);
 }
 
-/* Plugin epoll event handlers
+/* 插件的 epoll 事件 handlers
  * ---------------------------
- * this functions are called by connection.c functions as bf_conn_read(),
- * bf_conn_write(),bf_conn_error(), bf_conn_close() and bf_conn_timeout().
+ * 这个函数被 connection.c 的 bf_conn_read(),
+ * bf_conn_write(),bf_conn_error(), bf_conn_close(), bf_conn_timeout() 调用
  *
- * Return Values:
+ * 返回值:
  * -------------
- *    BF_PLUGIN_RET_EVENT_NOT_ME: There's no plugin hook associated
+ *    BF_PLUGIN_RET_EVENT_NOT_ME: 没有插件 hook 连接
  */
 
 void bf_plugin_event_bad_return(const char *hook, int ret)
@@ -851,7 +850,7 @@ int bf_plugin_event_read(int socket)
         if (node->event_read) {
             ret = node->event_read(socket);
 
-            /* validate return value */
+            /* 有效的返回值 */
             bf_plugin_event_check_return("read", ret);
             if (ret == BF_PLUGIN_RET_EVENT_NEXT) {
                 continue;
@@ -890,7 +889,7 @@ int bf_plugin_event_write(int socket)
         if (node->event_write) {
             ret = node->event_write(socket);
 
-            /* validate return value */
+            /* 有效的返回值 */
             bf_plugin_event_check_return("write", ret);
             if (ret == BF_PLUGIN_RET_EVENT_NEXT) {
                 continue;
@@ -929,7 +928,7 @@ int bf_plugin_event_error(int socket)
         if (node->event_error) {
             ret = node->event_error(socket);
 
-            /* validate return value */
+            /* 有效的返回值 */
             bf_plugin_event_check_return("error", ret);
             if (ret == BF_PLUGIN_RET_EVENT_NEXT) {
                 continue;
@@ -968,7 +967,7 @@ int bf_plugin_event_close(int socket)
         if (node->event_close) {
             ret = node->event_close(socket);
 
-            /* validate return value */
+            /* 有效的返回值 */
             bf_plugin_event_check_return("close", ret);
             if (ret == BF_PLUGIN_RET_EVENT_NEXT) {
                 continue;
@@ -1007,7 +1006,7 @@ int bf_plugin_event_timeout(int socket)
         if (node->event_timeout) {
             ret = node->event_timeout(socket);
 
-            /* validate return value */
+            /* 有效的返回值 */
             bf_plugin_event_check_return("timeout", ret);
             if (ret == BF_PLUGIN_RET_EVENT_NEXT) {
                 continue;
