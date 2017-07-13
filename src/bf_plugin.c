@@ -1,7 +1,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <dlfcn.h>
+#include <dlfcn.h> // 使用Linux动态链接库
 #include <err.h>
 
 #include "include/bf_connection.h"
