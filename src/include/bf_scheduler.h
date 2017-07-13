@@ -1,7 +1,7 @@
 #ifndef BF_SCHEDULE_H
 #define BF_SCHEDULE_H
 
-#include "include/bf_queue.h"
+#include "bf_queue.h"
 #include <pthread.h>
 
 #define BF_SCHEDULE_CONN_AVAILABLE  -1

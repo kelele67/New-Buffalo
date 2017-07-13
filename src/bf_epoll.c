@@ -9,15 +9,15 @@
 #include <sys/socket.h>
 #include <sys/epoll.h>
 
-#include "include/buffalo.h"
-#include "include/bf_socket.h"
-#include "include/bf_timer.h"
-#include "include/bf_request.h"
-#include "include/bf_config.h"
-#include "include/bf_scheduler.h"
-#include "include/bf_epoll.h"
-#include "include/bf_utils.h"
-#include "include/bf_debug.h"
+#include "buffalo.h"
+#include "bf_socket.h"
+#include "bf_timer.h"
+#include "bf_request.h"
+#include "bf_config.h"
+#include "bf_scheduler.h"
+#include "bf_epoll.h"
+#include "bf_utils.h"
+#include "bf_debug.h"
 
 bf_epoll_handlers *
 bf_epoll_set_handlers(void (*read) (int),

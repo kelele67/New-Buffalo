@@ -4,9 +4,9 @@
 #include <time.h>
 #include <unistd.h>
 
-#include "include/bf_memory.h"
-#include "include/bf_timer.h"
-#include "include/bf_utils.h"
+#include "bf_memory.h"
+#include "bf_timer.h"
+#include "bf_utils.h"
 
 static void bf_timer_log_set_time() {
     time_t utime;

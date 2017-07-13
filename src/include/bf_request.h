@@ -1,5 +1,5 @@
-#include "include/bf_memory.h"
-#include "include/bf_scheduler.h"
+#include "bf_memory.h"
+#include "bf_scheduler.h"
 
 #ifndef BF_REQUEST_H
 #define BF_REQUEST_H

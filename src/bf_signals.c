@@ -6,11 +6,11 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-#include "include/buffalo.h"
-#include "include/bf_signals.h"
-#include "include/bf_timer.h"
-#include "include/bf_plugin.h"
-#include "include/bf_debug.h"
+#include "buffalo.h"
+#include "bf_signals.h"
+#include "bf_timer.h"
+#include "bf_plugin.h"
+#include "bf_debug.h"
 
 /* 当捕获信号量并且准备退出时调用这个函数 ->使其关闭了pid,plugin之后安全退出*/
 void bf_signal_exit() {

@@ -10,12 +10,12 @@
 #include <fcntl.h>
 #include <string.h>
 
-#include "include/bf_socket.h"
-#include "include/bf_memory.h"
-#include "include/bf_utils.h"
-#include "include/bf_plugin.h"
-#include "include/buffalo.h"
-#include "include/bf_debug.h"
+#include "bf_socket.h"
+#include "bf_memory.h"
+#include "bf_utils.h"
+#include "bf_plugin.h"
+#include "buffalo.h"
+#include "bf_debug.h"
 
 static void bf_socket_safe_event_write(int socket) {
     struct sched_list_node *sched;

@@ -4,11 +4,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "include/buffalo.h"
-#include "include/bf_file.h"
-#include "include/bf_user.h"
-#include "include/bf_memory.h"
-#include "include/bf_utils.h"
+#include "buffalo.h"
+#include "bf_file.h"
+#include "bf_user.h"
+#include "bf_memory.h"
+#include "bf_utils.h"
 
 struct file_info *bf_file_get_info(char *path) {
     struct file_info *f_info;

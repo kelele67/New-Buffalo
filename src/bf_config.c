@@ -10,16 +10,16 @@
 #include <fcntl.h>
 #include <ctype.h>
 
-#include "include/buffalo.h"
-#include "include/bf_config.h"
-#include "include/bf_string.h"
-#include "include/bf_utils.h"
-#include "include/bf_mimetype.h"
-// #include "include/bf_info.h"
-#include "include/bf_memory.h"
-#include "include/bf_server.h"
-#include "include/bf_plugin.h"
-#include "include/bf_debug.h"
+#include "buffalo.h"
+#include "bf_config.h"
+#include "bf_string.h"
+#include "bf_utils.h"
+#include "bf_mimetype.h"
+// #include "bf_info.h"
+#include "bf_memory.h"
+#include "bf_server.h"
+#include "bf_plugin.h"
+#include "bf_debug.h"
 
 
 /* 配置错误和打印关闭 */

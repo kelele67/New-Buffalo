@@ -5,14 +5,14 @@
 #include <stdio.h>
 #include <pthread.h>
 
-#include "include/buffalo.h"
-#include "include/bf_config.h"
-#include "include/bf_memory.h"
-#include "include/bf_request.h"
-#include "include/bf_header.h"
-#include "include/bf_http.h"
-#include "include/bf_iov.h"
-#include "include/bf_user.h"
+#include "buffalo.h"
+#include "bf_config.h"
+#include "bf_memory.h"
+#include "bf_request.h"
+#include "bf_header.h"
+#include "bf_http.h"
+#include "bf_iov.h"
+#include "bf_user.h"
 
 //#define bf_memzero(buf, n)  (void) memset(buf, 0, n)
 //#define bf_memset(buf, c, n) (void) memset(buf, c, n)

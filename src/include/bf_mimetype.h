@@ -1,8 +1,8 @@
 #ifndef BF_MIMETYPE_H
 #define BF_MIMETYPE_H
 
-#include "include/bf_memory.h"
-#include "include/bf_queue.h"
+#include "bf_memory.h"
+#include "bf_queue.h"
 
 #define MIMETYPE_DEFAULT_TYPE "text/plain\r\n"
 #define MIMETYPE_DEFAULT_NAME "default"

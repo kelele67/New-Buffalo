@@ -6,14 +6,14 @@
 #include <sys/time.h>
 #include <sys/resource.h>
 
-#include "include/buffalo.h"
-#include "include/bf_config.h"
-#include "include/bf_scheduler.h"
-#include "include/bf_epoll.h"
-#include "include/bf_socket.h"
-#include "include/bf_plugin.h"
-#include "include/bf_utils.h"
-#include "include/bf_debug.h"
+#include "buffalo.h"
+#include "bf_config.h"
+#include "bf_scheduler.h"
+#include "bf_epoll.h"
+#include "bf_socket.h"
+#include "bf_plugin.h"
+#include "bf_utils.h"
+#include "bf_debug.h"
 
 /* 返回能够承受的客户端最大数和同时的每个工作线程容量 */
 int bf_server_worker_capacity(int nworkders) {

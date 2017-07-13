@@ -13,7 +13,7 @@
 #define HTTP_METHOD_POST_STR "POST"
 #define HTTP_METHOD_HEAD_STR "HEAD"
 
-#include "include/bf_memory.h"
+#include "bf_memory.h"
 
 bf_pointer bf_http_method_get_p;
 bf_pointer bf_http_method_post_p;
@@ -39,7 +39,7 @@ bf_pointer bf_http_protocol_10_p;
 bf_pointer bf_http_protocol_11_p;
 bf_pointer bf_http_protocol_null_p;
 
-#include "include/bf_request.h"
+#include "bf_request.h"
 
 int bf_http_method_check(bf_pointer method);
 bf_pointer bf_http_method_check_str(int method);

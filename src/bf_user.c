@@ -7,15 +7,15 @@
 #include <sys/types.h>
 #include <grp.h>
 
-#include "include/buffalo.h"
-#include "include/bf_user.h"
-#include "include/bf_http.h"
-#include "include/bf_http_status.h"
-#include "include/bf_memory.h"
-#include "include/bf_string.h"
-#include "include/bf_utils.h"
-#include "include/bf_config.h"
-#include "include/bf_debug.h"
+#include "buffalo.h"
+#include "bf_user.h"
+#include "bf_http.h"
+#include "bf_http_status.h"
+#include "bf_memory.h"
+#include "bf_string.h"
+#include "bf_utils.h"
+#include "bf_config.h"
+#include "bf_debug.h"
 
 int bf_user_init(struct client_session *cs, struct session_request *sr) {
     int limit;

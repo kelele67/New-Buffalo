@@ -1,11 +1,11 @@
 #include <pthread.h>
-#include "include/bf_iov.h"
-#include "include/bf_cache.h"
-#include "include/bf_request.h"
+#include "bf_iov.h"
+#include "bf_cache.h"
+#include "bf_request.h"
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "include/bf_utils.h"
+#include "bf_utils.h"
 
 /* 每当有新线程建立的时候都调用这个函数 */
 void bf_cache_thread_init() {

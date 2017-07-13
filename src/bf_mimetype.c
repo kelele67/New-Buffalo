@@ -4,15 +4,15 @@
 #include <unistd.h>
 #include <string.h>
 
-#include "include/bf_mimetype.h"
-#include "include/bf_memory.h"
-#include "include/bf_string.h"
-#include "include/bf_utils.h"
-#include "include/bf_config.h"
-#include "include/bf_request.h"
-#include "include/buffalo.h"
-#include "include/bf_queue.h"
-#include "include/bf_debug.h"
+#include "bf_mimetype.h"
+#include "bf_memory.h"
+#include "bf_string.h"
+#include "bf_utils.h"
+#include "bf_config.h"
+#include "bf_request.h"
+#include "buffalo.h"
+#include "bf_queue.h"
+#include "bf_debug.h"
 
 
 /* 最常使用的 mime types 数量 */

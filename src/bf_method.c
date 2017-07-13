@@ -9,16 +9,16 @@
 #include <string.h>
 #include <time.h>
 
-#include "include/buffalo.h"
-#include "include/bf_string.h"
-#include "include/bf_memory.h"
-#include "include/bf_http.h"
-#include "include/bf_http_status.h"
-#include "include/bf_socket.h"
-#include "include/bf_config.h"
-#include "include/bf_utils.h"
-#include "include/bf_file.h"
-#include "include/bf_cache.h"
+#include "buffalo.h"
+#include "bf_string.h"
+#include "bf_memory.h"
+#include "bf_http.h"
+#include "bf_http_status.h"
+#include "bf_socket.h"
+#include "bf_config.h"
+#include "bf_utils.h"
+#include "bf_file.h"
+#include "bf_cache.h"
 
 long int bf_method_post_content_length(char *body) {
     struct header_toc *toc = NULL;

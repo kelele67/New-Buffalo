@@ -5,11 +5,11 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-#include "include/bf_debug.h"
-#include "include/bf_request.h"
-#include "include/bf_utils.h"
-#include "include/bf_memory.h"
-#include "include/bf_string.h"
+#include "bf_debug.h"
+#include "bf_request.h"
+#include "bf_utils.h"
+#include "bf_memory.h"
+#include "bf_string.h"
 
 /**
  * 常规搜索函数的实现，可以开启/关闭修饰符

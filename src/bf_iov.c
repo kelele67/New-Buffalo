@@ -5,11 +5,11 @@
 #include <errno.h>
 #include <limits.h>
 
-#include "include/buffalo.h"
-#include "include/bf_header.h"
-#include "include/bf_memory.h"
-#include "include/bf_utils.h"
-#include "include/bf_iov.h"
+#include "buffalo.h"
+#include "bf_header.h"
+#include "bf_memory.h"
+#include "bf_utils.h"
+#include "bf_iov.h"
 
 struct bf_iov *bf_iov_create(int n, int offset) {
     struct bf_iov *iov;

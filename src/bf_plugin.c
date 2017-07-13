@@ -4,14 +4,14 @@
 #include <dlfcn.h> // 使用Linux动态链接库
 #include <err.h>
 
-#include "include/bf_connection.h"
-#include "include/bf_request.h"
-#include "include/bf_utils.h"
-#include "include/bf_file.h"
-#include "include/bf_http.h"
-#include "include/bf_timer.h"
-#include "include/bf_plugin.h"
-#include "include/bf_debug.h"
+#include "bf_connection.h"
+#include "bf_request.h"
+#include "bf_utils.h"
+#include "bf_file.h"
+#include "bf_http.h"
+#include "bf_timer.h"
+#include "bf_plugin.h"
+#include "bf_debug.h"
 
 static int bf_plugin_event_set_list(struct bf_queue_s *list) {
 	return pthread_setspecific(bf_plugin_event_k, (void *) list);
@@ -96,8 +96,7 @@ void nf_plugin_register_stagemap(struct plugin *p) {
 }
 
 /* 分配插件内存 */
-struct plugin *bf_plugin_alloc(void *handler, char *path)
-{
+struct plugin *bf_plugin_alloc(void *handler, char *path) {
     struct plugin *p;
     struct plugin_info *info;
 
@@ -199,8 +198,7 @@ struct plugin *bf_plugin_alloc(void *handler, char *path)
 /**
  * 注册插件并把符号放在插件list结点上
  */
-struct plugin *bf_plugin_register(struct plugin *p)
-{
+struct plugin *bf_plugin_register(struct plugin *p) {
     if (!p->name || !p->version || !p->hooks) {
         BF_TRACE("Plugin must define name, version and hooks. Check: %s", p->path);
         bf_plugin_free(p);
@@ -455,8 +453,7 @@ void bf_plugin_init() {
     bf_free(path);
 }
 
-void bf_plugin_exit_all()
-{
+void bf_plugin_exit_all() {
     struct plugin *node;
     struct bf_queue_s *head;
 
@@ -469,8 +466,7 @@ void bf_plugin_exit_all()
 int bf_plugin_stage_run(unsigned int hook,
                         unsigned int socket,
                         struct sched_connection *conx,
-                        struct client_session *cs, struct session_request *sr)
-{
+                        struct client_session *cs, struct session_request *sr) {
     int ret;
     struct plugin_stagem *stm;
 
@@ -509,7 +505,7 @@ int bf_plugin_stage_run(unsigned int hook,
         }
     }
 
-    /* 插件就像一个对象处理程序，它处理request，并决定怎么
+    /** 插件就像一个对象处理程序，它处理request，并决定怎么
      * 处理该request
      */
     if (hook & BF_PLUGIN_STAGE_30) {
@@ -570,16 +566,14 @@ int bf_plugin_stage_run(unsigned int hook,
     return -1;
 }
 
-void bf_plugin_request_handler_add(struct session_request *sr, struct plugin *p)
-{
+void bf_plugin_request_handler_add(struct session_request *sr, struct plugin *p) {
     if (!sr->handled_by) {
         sr->handled_by = p;
         return;
     }
 }
 
-void bf_plugin_request_handler_del(struct session_request *sr, struct plugin *p)
-{
+void bf_plugin_request_handler_del(struct session_request *sr, struct plugin *p) {
     if (!sr->handled_by) {
         return;
     }
@@ -587,11 +581,10 @@ void bf_plugin_request_handler_del(struct session_request *sr, struct plugin *p)
     bf_free(sr->handled_by);
 }
 
-/* 这个函数在每一个插件工作线程需要在
+/** 这个函数在每一个插件工作线程需要在
  * 线程上下文设置一些数据的时候被调用
  */
-void bf_plugin_core_process()
-{
+void bf_plugin_core_process() {
     struct plugin *node;
     struct bf_queue_s *head;
 
@@ -605,12 +598,10 @@ void bf_plugin_core_process()
     }
 }
 
-/* This function is called by every created worker
- * for plugins which need to set some data under a thread
- * context
+/** 这个函数被每个已经创建的工作线程 
+ * 需要在线程上下文的时候建立一些数据的时候调用 
  */
-void bf_plugin_core_thread()
-{
+void bf_plugin_core_thread() {
 
     struct plugin *node;
     struct bf_queue_s *head;
@@ -618,19 +609,17 @@ void bf_plugin_core_thread()
     bf_queue_foreach(head, config->plugins) {
         node = bf_queue_entry(head, struct plugin, _head);
 
-        /* Init plugin thread context */
+        /* 初始化插件线程上下文 */
         if (node->core.thctx) {
             node->core.thctx();
         }
     }
 }
 
-/* This function is called by Monkey *outside* of the
- * thread context for plugins, so here's the right
- * place to set pthread keys or similar
+/** 这个函数被Buffalo的插件线程上下文的 外部调用
+ * 所以我们在这里初始化 Pthread keys
  */
-void bf_plugin_preworker_calls()
-{
+void bf_plugin_preworker_calls() {
     int ret;
     struct plugin *node;
     struct bf_queue_s *head;
@@ -651,8 +640,7 @@ void bf_plugin_preworker_calls()
     }
 }
 
-int bf_plugin_event_del(int socket)
-{
+int bf_plugin_event_del(int socket) {
     struct bf_queue_s *head, *list, *temp;
     struct plugin_event *node;
 
@@ -680,8 +668,7 @@ int bf_plugin_event_del(int socket)
 int bf_plugin_event_add(int socket, int mode,
                         struct plugin *handler,
                         struct client_session *cs,
-                        struct session_request *sr)
-{
+                        struct session_request *sr) {
     struct sched_list_node *sched;
     struct plugin_event *event;
 
@@ -709,8 +696,7 @@ int bf_plugin_event_add(int socket, int mode,
     return 0;
 }
 
-int bf_plugin_http_request_end(int socket)
-{
+int bf_plugin_http_request_end(int socket) {
     int ret;
 
     BF_TRACE("[FD %i] PLUGIN HTTP REQUEST END", socket);
@@ -725,8 +711,7 @@ int bf_plugin_http_request_end(int socket)
     return 0;
 }
 
-int bf_plugin_event_socket_change_mode(int socket, int mode)
-{
+int bf_plugin_event_socket_change_mode(int socket, int mode) {
     struct sched_list_node *sched;
 
     sched = bf_sched_get_thread_conf();
@@ -738,15 +723,13 @@ int bf_plugin_event_socket_change_mode(int socket, int mode)
     return bf_epoll_change_mode(sched->epoll_fd, socket, mode);
 }
 
-struct plugin_event *bf_plugin_event_get(int socket)
-{
+struct plugin_event *bf_plugin_event_get(int socket) {
     struct bf_queue_s *head, *list;
     struct plugin_event *node;
 
     list = bf_plugin_event_get_list();
 
-    /* 
-     * 在某些情况下，从scheduler.c 调用这个函数。
+    /** 在某些情况下，从scheduler.c 调用这个函数。
      * 当连接关闭时，在那一刻没有线程上下文存在，所以返回列表为空
      */
     if (!list) {
@@ -763,8 +746,7 @@ struct plugin_event *bf_plugin_event_get(int socket)
     return NULL;
 }
 
-void bf_plugin_event_init_list()
-{
+void bf_plugin_event_init_list() {
     struct bf_queue_s *list;
 
     list = bf_alloc(sizeof(struct bf_queue_s));
@@ -783,13 +765,11 @@ void bf_plugin_event_init_list()
  *    BF_PLUGIN_RET_EVENT_NOT_ME: 没有插件 hook 连接
  */
 
-void bf_plugin_event_bad_return(const char *hook, int ret)
-{
+void bf_plugin_event_bad_return(const char *hook, int ret) {
     bf_err("[%s] Not allowed return value %i", hook, ret);
 }
 
-int bf_plugin_event_check_return(const char *hook, int ret)
-{
+int bf_plugin_event_check_return(const char *hook, int ret) {
 #ifdef TRACE
     BF_TRACE("Hook '%s' returned %i", hook, ret);
     switch(ret) {
@@ -824,8 +804,7 @@ int bf_plugin_event_check_return(const char *hook, int ret)
     return -1;
 }
 
-int bf_plugin_event_read(int socket)
-{
+int bf_plugin_event_read(int socket) {
     int ret;
     struct plugin *node;
     struct bf_queue_s *head;
@@ -864,8 +843,7 @@ int bf_plugin_event_read(int socket)
     return BF_PLUGIN_RET_EVENT_CONTINUE;
 }
 
-int bf_plugin_event_write(int socket)
-{
+int bf_plugin_event_write(int socket) {
     int ret;
     struct plugin *node;
     struct bf_queue_s *head;
@@ -903,8 +881,7 @@ int bf_plugin_event_write(int socket)
     return BF_PLUGIN_RET_CONTINUE;
 }
 
-int bf_plugin_event_error(int socket)
-{
+int bf_plugin_event_error(int socket) {
     int ret;
     struct plugin *node;
     struct bf_queue_s *head;
@@ -942,8 +919,7 @@ int bf_plugin_event_error(int socket)
     return BF_PLUGIN_RET_CONTINUE;
 }
 
-int bf_plugin_event_close(int socket)
-{
+int bf_plugin_event_close(int socket) {
     int ret;
     struct plugin *node;
     struct bf_queue_s *head;
@@ -981,8 +957,7 @@ int bf_plugin_event_close(int socket)
     return BF_PLUGIN_RET_CONTINUE;
 }
 
-int bf_plugin_event_timeout(int socket)
-{
+int bf_plugin_event_timeout(int socket) {
     int ret;
     struct plugin *node;
     struct bf_queue_s *head;
@@ -1020,18 +995,15 @@ int bf_plugin_event_timeout(int socket)
     return BF_PLUGIN_RET_CONTINUE;
 }
 
-int bf_plugin_time_now_unix()
-{
+int bf_plugin_time_now_unix() {
     return log_current_utime;
 }
 
-bf_pointer *bf_plugin_time_now_human()
-{
+bf_pointer *bf_plugin_time_now_human() {
     return &log_current_time;
 }
 
-int bf_plugin_sched_remove_client(int socket)
-{
+int bf_plugin_sched_remove_client(int socket) {
     struct sched_list_node *node;
 
     BF_TRACE("[FD %i] remove client", socket);
@@ -1040,8 +1012,7 @@ int bf_plugin_sched_remove_client(int socket)
     return bf_sched_remove_client(node, socket);
 }
 
-int bf_plugin_header_add(struct session_request *sr, char *row, int len)
-{
+int bf_plugin_header_add(struct session_request *sr, char *row, int len) {
     bf_bug(!sr);
     bf_bug(!sr->headers);
 

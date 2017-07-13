@@ -1,5 +1,5 @@
-#include "include/bf_request.h"
-#include "include/bf_http_status.h"
+#include "bf_request.h"
+#include "bf_http_status.h"
 
 #ifndef BF_HEADER_H
 #define BF_HEADER_H

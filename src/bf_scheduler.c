@@ -7,19 +7,19 @@
 #include <sys/syscall.h>
 #include <string.h>
 
-#include "include/buffalo.h"
-#include "include/bf_connection.h"
-#include "include/bf_scheduler.h"
-#include "include/bf_memory.h"
-#include "include/bf_epoll.h"
-#include "include/bf_request.h"
-#include "include/bf_cache.h"
-#include "include/bf_config.h"
-#include "include/bf_timer.h"
-#include "include/bf_signals.h"
-#include "include/bf_plugin.h"
-#include "include/bf_utils.h"
-#include "include/bf_debug.h"
+#include "buffalo.h"
+#include "bf_connection.h"
+#include "bf_scheduler.h"
+#include "bf_memory.h"
+#include "bf_epoll.h"
+#include "bf_request.h"
+#include "bf_cache.h"
+#include "bf_config.h"
+#include "bf_timer.h"
+#include "bf_signals.h"
+#include "bf_plugin.h"
+#include "bf_utils.h"
+#include "bf_debug.h"
 
 /* 注册线程信息 */
 int bf_sched_regiser_thread(pthread_t tid, int efd) {
