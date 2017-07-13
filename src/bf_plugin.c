@@ -381,7 +381,7 @@ void bf_plugin_init() {
     api->errno_print = (void *) bf_utils_print_errno;
 #endif
 
-    /* Read configuration file */
+    /* 读配置文件 */
     path = bf_calloc(1024);
     snprintf(path, 1024, "%s/%s", config->serverconf, BF_PLUGIN_LOAD);
     cnf = bf_config_create(path);
@@ -474,7 +474,7 @@ int bf_plugin_stage_run(unsigned int hook,
     int ret;
     struct plugin_stagem *stm;
 
-    /* Connection just accept(ed) not assigned to worker thread */
+    /* 连接刚建立但是并没有创建工作线程 */
     if (hook & BF_PLUGIN_STAGE_10) {
         stm = plg_stagemap->stage_10;
         while (stm) {
@@ -491,7 +491,7 @@ int bf_plugin_stage_run(unsigned int hook,
         }
     }
 
-    /* The HTTP Request stream has been just received */
+    /* HTTP Request 到达 */
     if (hook & BF_PLUGIN_STAGE_20) {
         stm = plg_stagemap->stage_20;
         while (stm) {
@@ -509,12 +509,11 @@ int bf_plugin_stage_run(unsigned int hook,
         }
     }
 
-    /* The plugin acts like an Object handler, it will take care of the 
-     * request, it decides what to do with the request 
+    /* 插件就像一个对象处理程序，它处理request，并决定怎么
+     * 处理该request
      */
     if (hook & BF_PLUGIN_STAGE_30) {
-        /* The request just arrived and is required to check who can
-         * handle it */
+        /* request 刚刚到达需要检查是哪个插件来处理它 */
         if (!sr->handled_by){
             stm = plg_stagemap->stage_30;
             while (stm) {
@@ -540,7 +539,7 @@ int bf_plugin_stage_run(unsigned int hook,
         }
     }
 
-    /* The request has ended, the content has been served */
+    /* request 结束， 报文都被接收 */
     if (hook & BF_PLUGIN_STAGE_40) {
         stm = plg_stagemap->stage_40;
         while (stm) {
@@ -551,7 +550,7 @@ int bf_plugin_stage_run(unsigned int hook,
         }
     }
 
-    /* The request has ended, the content has been served */
+    /* connection 连接终止 */
     if (hook & BF_PLUGIN_STAGE_50) {
         stm = plg_stagemap->stage_50;
         while (stm) {
@@ -588,9 +587,8 @@ void bf_plugin_request_handler_del(struct session_request *sr, struct plugin *p)
     bf_free(sr->handled_by);
 }
 
-/* This function is called by every created worker
- * for plugins which need to set some data under a thread
- * context
+/* 这个函数在每一个插件工作线程需要在
+ * 线程上下文设置一些数据的时候被调用
  */
 void bf_plugin_core_process()
 {
@@ -600,7 +598,7 @@ void bf_plugin_core_process()
     bf_queue_foreach(head, config->plugins) {
         node = bf_queue_entry(head, struct plugin, _head);
         
-        /* Init plugin */
+        /* 初始化插件 */
         if (node->core.prctx) {
             node->core.prctx(config);
         }
@@ -692,14 +690,14 @@ int bf_plugin_event_add(int socket, int mode,
     sched = bf_sched_get_thread_conf();
 
     if (sched && handler && cs && sr) {
-        /* Event node (this list exist at thread level */
+        /* 事件结点 （list 是建立在线程上的） */
         event = bf_alloc(sizeof(struct plugin_event));
         event->socket = socket;
         event->handler = handler;
         event->cs = cs;
         event->sr = sr;
         
-        /* Get thread event list */
+        /* 获取线程事件 list */
         list = bf_plugin_event_get_list();
         bf_queue_add(&event->_head, list);
         bf_plugin_event_set_list(list);

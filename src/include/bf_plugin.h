@@ -28,7 +28,7 @@
 #define BF_PLUGIN_STAGE_10 (4)    /* accept()连接刚刚建立 */
 #define BF_PLUGIN_STAGE_20 (8)    /* HTTP Request 到达 */
 #define BF_PLUGIN_STAGE_30 (16)   /* 对象 handler  */
-#define BF_PLUGIN_STAGE_40 (32)   /* content 内容完成 */
+#define BF_PLUGIN_STAGE_40 (32)   /* content 报文内容接收完成 */
 #define BF_PLUGIN_STAGE_50 (64)   /* connection 连接终止 */
 
 /* 插件 网络类型 */
