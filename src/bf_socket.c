@@ -93,7 +93,7 @@ static void bf_socket_safe_event_write(int socket) {
 
  void socket_reset(int socket) {
      int status = 1;
-     
+     /* 在绑定一个socket之前设置了SO_REUSEADDR，除非两个socket绑定的源地址和端口号都一样，那么这两个绑定都是可行的 */
      if (setsockopt(socket, SOL_SOCKET, SO_REUSEADDR, &states, sizeof(int)) == -1) {
          perror("setsockopt");
          exit(EXIT_FAILURE);

@@ -38,7 +38,7 @@ bf_pointer bf_iov_equal;
 
 struct bf_iov {
     struct iovec *io;
-    cahr **buf_to_free;
+    char **buf_to_free;
     int iov_index;
     int buf_index;
     int size;

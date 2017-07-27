@@ -148,7 +148,10 @@ void *bf_sched_launch_epoll_loop(void *thread_conf) {
         thinfo = bf_sched_get_thread_conf();
     }
 
-    /* C运行库Glibc doesn't export to user space the gettid() syscall */
+    /* 系统调用获取线程真实ID->tid
+     * 有一个函数gettid()可以得到tid，但glibc并没有实现该函数，
+     * 只能通过Linux的系统调用syscall来获取。
+     */
     thinfo->pid = syscall(__NR_gettid);
 
     bf_sched_set_thread_poll(thconf->epoll_fd);
@@ -178,6 +181,10 @@ struct sched_list_node *bf_sched_get_thread_conf() {
     struct sched_list_node *node;
     pthread_t current;
 
+    /* linux下的POSIX线程也有一个id，
+     * 类型 pthread_t，由pthread_self()取得，
+     * 该id由线程库维护，其id空间是各个进程独立的（即不同进程中的线程可能有相同的id）
+     */
     current = pthread_self();
 
     bf_queue_foreach(list_node, sched_list) {
@@ -250,9 +257,24 @@ int bf_sched_add_client(int remote_fd) {
 int bf_sched_remove_client(struct sched_list_node *sched, int remote_fd) {
     struct sched_conneciton *sc;
 
-    sc = bf_sched_get_connection(sched, remote_fd);
+    sc = mk_sched_get_connection(sched, remote_fd);
     if (sc) {
-        BF_TRACE("[FD %i] Not found", remote_fd);
+        MK_TRACE("[FD %i] Scheduler remove", remote_fd);
+
+        /* Close socket and change status */
+        close(remote_fd);
+
+        /* Invoke plugins in stage 50 */
+        mk_plugin_stage_run(MK_PLUGIN_STAGE_50, remote_fd, NULL, NULL, NULL);
+
+        /* Change node status */
+        sched->active_connections--;
+        sc->status = MK_SCHEDULER_CONN_AVAILABLE;
+        sc->socket = -1;
+        return 0;
+    }
+    else {
+        MK_TRACE("[FD %i] Not found", remote_fd);
     }
     return -1;
 }

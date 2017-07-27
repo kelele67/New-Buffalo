@@ -12,7 +12,7 @@ typedef struct {
 /* 考虑换成由双向链表管理的内存池 */
 struct list_sint {
     unsigned short int index;
-    bf_pool_s value;
+    bf_pointer value;
     struct list_sint *next;
 };
 
